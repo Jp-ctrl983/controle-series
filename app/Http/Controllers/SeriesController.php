@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use Illuminate\Http\Request;
+use Laravel\Prompts\Concerns\Events;
 
 class SeriesController extends Controller
 {
