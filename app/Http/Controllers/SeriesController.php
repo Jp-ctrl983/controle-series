@@ -27,6 +27,7 @@ class SeriesController extends Controller
         return view('series.create');
     }
 
+    
     public function store(SeriesFormRequest $request)
     {
         $coverPath = "series-cover/imagemPd.png";
