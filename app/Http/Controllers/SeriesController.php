@@ -14,6 +14,7 @@ class SeriesController extends Controller
             ->except('index');
     }
 
+    
     public function index(Request $request)
     {
         $query = Series::query();
