@@ -13,6 +13,8 @@ class SeriesController extends Controller
 
     // direto para original
 
+    // terceiro teste, esse vai direto para o principal
+
     public function __construct()
     {
         $this->middleware('auth')
