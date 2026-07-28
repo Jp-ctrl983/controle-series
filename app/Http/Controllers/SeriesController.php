@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class SeriesController extends Controller
 {
+
+    // teste de branch
+
     public function __construct()
     {
         $this->middleware('auth')
