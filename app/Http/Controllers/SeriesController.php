@@ -6,15 +6,10 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use Illuminate\Http\Request;
 
+use function Termwind\parse;
+
 class SeriesController extends Controller
 {
-
-    // teste de branch
-
-    // direto para original
-
-    // terceiro teste, esse vai direto para o principal
-
     public function __construct()
     {
         $this->middleware('auth')
@@ -24,7 +19,7 @@ class SeriesController extends Controller
     public function index(Request $request)
     {
         $query = Series::query();
-        $series = $query->paginate(2);
+        $series = $query->paginate(3);
 
         $mensagem = $request->session()->get('mensagem.sucesso');
 
@@ -65,18 +60,46 @@ class SeriesController extends Controller
             (int)Series::max('id')
         );
 
+        $html = view('mail.series-created-api')->with(
+                [
+                    'nomeSerie' => $request->nome,
+                    'qtdTemporadas' => $request->seasonQty,
+                    'episodePorTemporadas' => $request->episodePerSeason,
+                    'idSerie' => $request->id
+                ]
+            );
+
+        // \App\Events\ApiSetEmail::dispatch(
+        //     "jpdrfernandesnascimento@gmail.com",
+        //     $request->nome,
+        //     $html
+        // );
+
         $request->session()->flash('mensagem.sucesso', "Série '{$request->nome}' criada com sucesso!");
 
         return redirect()->route('series.index');
     }
 
-    public function destroy(Series $series)
+    public function destroy(Series $series, Request $request)
     {
         $series->delete();
         \App\Events\FlameCover::dispatch($series->cover);
 
-        return to_route('series.index')
-            ->with('mensagem.sucesso', "Série '{$series->nome}' removida com sucesso!");
+        #captura parametros de onde a url veio
+        $prev = url()->previous();
+        $queryStr = parse_url($prev, PHP_URL_QUERY);
+        parse_str($queryStr, $param);
+
+        #Verifica se existia uma pagina anterior
+        $page = isset($param['page']) ? $param['page'] : 1;
+
+        return to_route(
+            'series.index',
+            #Parametro para e rota
+            [
+                'page' => $page
+            ]
+        )->with('mensagem.sucesso', "Série '{$series->nome}' removida com sucesso!");
     }
 
     public function edit(Series $series)
