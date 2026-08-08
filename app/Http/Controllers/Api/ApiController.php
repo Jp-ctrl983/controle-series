@@ -8,11 +8,16 @@ use App\Events\RetrievesAllRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiVerify;
 use App\Models\Series;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function __construct() {}
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')
+            ->except('index');
+    }
 
     public function index(Request $request)
     {
@@ -70,8 +75,10 @@ class ApiController extends Controller
         return Series::whereId($serie)->first();
     }
 
-    public function destroy(int $serie)
+    public function destroy(int $serie, Authenticatable $user)
     {
+        dd($user->tokenCan('series:delete'));
+
         Series::destroy($serie);
         // no content é uma resposta vazia
         return response()->noContent();
