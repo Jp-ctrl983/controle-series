@@ -69,7 +69,6 @@ class SeriesController extends Controller
             ]
         );
 
-        
         // \App\Events\ApiSetEmail::dispatch(
         //     "jpdrfernandesnascimento@gmail.com",
         //     $request->nome,
