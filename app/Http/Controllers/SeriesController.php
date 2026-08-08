@@ -61,13 +61,13 @@ class SeriesController extends Controller
         );
 
         $html = view('mail.series-created-api')->with(
-                [
-                    'nomeSerie' => $request->nome,
-                    'qtdTemporadas' => $request->seasonQty,
-                    'episodePorTemporadas' => $request->episodePerSeason,
-                    'idSerie' => $request->id
-                ]
-            );
+            [
+                'nomeSerie' => $request->nome,
+                'qtdTemporadas' => $request->seasonQty,
+                'episodePorTemporadas' => $request->episodePerSeason,
+                'idSerie' => $request->id
+            ]
+        );
 
         // \App\Events\ApiSetEmail::dispatch(
         //     "jpdrfernandesnascimento@gmail.com",
